@@ -35,6 +35,8 @@ const FeaturedCollections = () => {
             />
         </div>
 
+        
+
 
         </div>
 
