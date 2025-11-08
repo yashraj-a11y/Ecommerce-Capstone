@@ -12,6 +12,13 @@ import Checkout from './components/Cart/Checkout'
 import OrderConfirmatonPage from './pages/OrderConfirmatonPage'
 import OrderDetailsPage from './pages/OrderDetailsPage'
 import MyOrdersPage from './pages/MyOrdersPage'
+import AdminLayout from './components/Admin/AdminLayout'
+import AdminHomePAge from './pages/AdminHomePAge'
+import UserManagement from './components/Admin/UserManagement'
+import ProductManagement from './components/Admin/ProductManagement'
+import EditProduct from './components/Admin/EditProduct'
+import OrderManagement from './components/Admin/OrderManagement'
+import Shop from './components/Admin/Shop'
 
 function App() {
   return (
@@ -34,17 +41,23 @@ function App() {
               <Route path='order/:id' element={<OrderDetailsPage />} />
               <Route path = '/my-orders' element={<MyOrdersPage />} />
 
-              
 
 
-              
-
-          
           </Route>
           {/* <Route index element={<Home/>} /> */}
             
 
-          <Route>{/*Admin Layout */}</Route>
+          <Route path='/admin' element={<AdminLayout />} > 
+            <Route index element={<AdminHomePAge />} ></Route>
+            <Route path='users' element={<UserManagement />}></Route>
+            <Route path='products' element={<ProductManagement />}></Route>
+            <Route path='products/:id/edit' element={<EditProduct />}></Route>
+            <Route path='orders' element={<OrderManagement />}></Route>
+            <Route path='shop' element={<Shop />}></Route>
+
+          </Route>
+         
+
 
 
 
