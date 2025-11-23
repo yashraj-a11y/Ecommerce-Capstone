@@ -6,6 +6,10 @@ import SortOptions from "../components/ Products/SortOptions";
 import ProductsGrid from "../components/ Products/ProductsGrid";
 
 const CollectionPage = () => {
+  
+
+
+
   const [products, setProducts] = useState([]);
 
   const sidebarRef = useRef(null) ;

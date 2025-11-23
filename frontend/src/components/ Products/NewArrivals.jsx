@@ -3,6 +3,7 @@
 import React, { useRef, useEffect ,useState } from 'react'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
 
 const NewArrivals = () => {
 
@@ -12,6 +13,20 @@ const NewArrivals = () => {
     const [scrollLeft , setScrollLeft] = useState(false)
     const [canScrollRight , setCanScrollRight] = useState(true)
     const [canScrollLeft , setCanScrollLeft] = useState(false)
+    const [newArrivals, setNewArrivals] = useState([])
+
+    useEffect(() => {
+        const fetchNewArrivals = async() => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/products/new-arrivals`) ;
+                setNewArrivals(response.data)
+            } catch(err) {
+                console.error(err)
+            }
+
+        }
+        fetchNewArrivals()
+    } , [])
 
     const newArrival = [
         {
@@ -190,7 +205,7 @@ const NewArrivals = () => {
 
         } ;
 
-    } ,[]) ;
+    } ,[newArrivals]) ;
 
 
 

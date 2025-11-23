@@ -12,6 +12,12 @@ const router = express.Router();
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
+  if (!name && !email && !password) {
+    console.log('credentials not being provided');
+    return res.status(404).json({message : "invalid credentials"})
+    
+  }
+
   try {
     // Check if user exists
     let user = await User.findOne({ email });
@@ -23,6 +29,8 @@ router.post("/register", async (req, res) => {
     // Create new user instance
     user = new User({ name, email, password });
     await user.save();
+    console.log('user data saved succesfully');
+    
 
     // Create JWT payload
     const payload = { user: { id: user._id, role: user.role } };
@@ -47,7 +55,7 @@ router.post("/register", async (req, res) => {
     );
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).send("Error");
   }
 });
 
@@ -60,12 +68,18 @@ router.post("/login", async (req, res) => {
   try {
     // Check if user exists
     let user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
-
+    if (!user) {
+      console.log('invalid credentials')
+      return res.status(400).json({ message: "Invalid credentials" });
+}
     // Match password
     const isMatch = await user.matchPassword(password);
-    if (!isMatch)
+    if (!isMatch) {
+      console.log('invalid password')
       return res.status(400).json({ message: "Invalid credentials" });
+
+    }
+      
 
     // Create JWT payload
     const payload = { user: { id: user._id, role: user.role } };
