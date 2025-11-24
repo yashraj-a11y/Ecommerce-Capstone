@@ -1,15 +1,44 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import register from '../assets/Register from Rabbit Assets.webp'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { loginUser, registerUser } from '../redux/slices/authSlice'   
+import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { mergeCart } from '../redux/slices/cartSlice'
 
 const Register = () => {
 
     const [email , setEmail] = useState('')
     const [password , setPassword] = useState('')
     const [name,setName] = useState('')
+
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const { user, guestId } = useSelector((state) => state.auth)
+    const { cart } = useSelector((state) => state.cart)
+
+    // redirect logic
+    const redirect = new URLSearchParams(location.search).get('redirect') || '/'
+    const isCheckoutRedirect = redirect.includes('checkout')
+
+    useEffect(() => {
+        if (!user) return;
+
+        const goTo = isCheckoutRedirect ? '/checkout' : '/';
+
+        // merge cart only if needed
+        if (cart?.products?.length > 0 && guestId) {
+            dispatch(mergeCart(guestId, user)).then(() => {
+                navigate(goTo)
+            })
+        } else {
+            navigate(goTo)
+        }
+    }, [user]) 
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -75,7 +104,7 @@ const Register = () => {
 
                 <p className='mt-6 text-center text-sm'>
                     Already have an account ? <br/>
-                    <Link to='/login' className='text-blue-500'>Login</Link>
+                    <Link to={`/login?redirect=${encodeURIComponent(redirect)}`} className='text-blue-500'>Login</Link>
                 </p>
 
             </form>

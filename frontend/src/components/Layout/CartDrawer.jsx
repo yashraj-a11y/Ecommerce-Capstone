@@ -4,14 +4,35 @@ import React, { useState } from 'react'
 import { IoMdClose } from 'react-icons/io'
 import CartContents from '../Cart/CartContents'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const CartDrawer = ({drawerOpen,toggleCartDrawer}) => {
-
     
     const navigate = useNavigate()
+
+    const { user, guestId } = useSelector((state) => state.auth);
+    const { cart } = useSelector((state) => state.cart);
+    const userId = user ? user._id : null ;
+
+
+
+
+
+
+
     const handleCheckout = () => {
+
         toggleCartDrawer()
-        navigate('/checkout')
+
+        if (!user) {
+            navigate('/login?redirect=checkout')
+        } else {
+            navigate('/checkout')
+
+        }
+
+
+
 
     }
 
@@ -29,17 +50,27 @@ const CartDrawer = ({drawerOpen,toggleCartDrawer}) => {
         {/* cart contents with scrollable area */}
         <div className='flex-grow p-4 overflow-y-auto'>
             <h2 className='text-xl font-semibold mb-4'>Your cart</h2>
+            {cart && cart?.products?.length > 0 ? 
+            (<CartContents cart={cart} userId={userId} />) : 
+            (<p>Your Cart is empty</p>)
+            }
             <CartContents />
 
         </div>
 
-        {/* checkOut button fixe at the bottom */}
+        {/* checkOut button fixed at the bottom */}
         <div className='p-4 bg-white sticky bottom-0'>
-            <button onClick={handleCheckout} className='w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition'>checkout</button>
-            <p className='text-sm tracking-tighter text-gray-500 mt-2 text-center'>
+            {cart && cart?.products?.length > 0 && (
+                <>
+                 <button onClick={handleCheckout} className='w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition'>checkout</button>
+                <p className='text-sm tracking-tighter text-gray-500 mt-2 text-center'>
                 Shipping , taxes , and discount codes calculated
 
-            </p>
+                </p>
+                </>
+
+            )}
+           
         </div>
 
     </div>

@@ -22,6 +22,7 @@ import Shop from "./components/Admin/Shop";
 
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import ProtectedRoute from "./components/Common/ProtectedRoute";
 
 function App() {
   return (
@@ -52,7 +53,11 @@ function App() {
           </Route>
           {/* <Route index element={<Home/>} /> */}
 
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route path="/admin" element={
+            <ProtectedRoute>
+              <AdminLayout role='admin'/>
+            </ProtectedRoute>
+            }>
             <Route index element={<AdminHomePAge />}></Route>
             <Route path="users" element={<UserManagement />}></Route>
             <Route path="products" element={<ProductManagement />}></Route>

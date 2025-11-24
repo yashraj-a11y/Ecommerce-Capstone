@@ -75,7 +75,7 @@ const orderSlice = createSlice ({
             })
             .addCase(fetchUserOrders.rejected , (state,action) => {
                 state.loading = false ;
-                state.error = action.payload.message ;
+                state.error = action.payload ;
             }) 
 
             // Fetch order details

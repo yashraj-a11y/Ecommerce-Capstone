@@ -35,13 +35,13 @@ export const loginUser = createAsyncThunk(
         userData
       );
 
+      // store user + token
       localStorage.setItem("userInfo", JSON.stringify(response.data.user));
       localStorage.setItem("userToken", response.data.token);
 
-      return response.data.user;
+      return response.data.user; // correct return
     } catch (error) {
-        console.log(error);
-        
+      console.log(error);
       return rejectWithValue(error.response?.data || "Login failed");
     }
   }
@@ -58,12 +58,14 @@ export const registerUser = createAsyncThunk(
         `${import.meta.env.VITE_BACKEND_URL}/api/users/register`,
         userData
       );
+
+      // store user + token
       localStorage.setItem("userInfo", JSON.stringify(response.data.user));
       localStorage.setItem("userToken", response.data.token);
 
-      return response.data.user; // return actual user
+      return response.data.user;
     } catch (error) {
-      console.log(err)
+      console.log(error); // FIXED (err → error)
       return rejectWithValue(error.response?.data || "Registration failed");
     }
   }
@@ -100,7 +102,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload;
+        state.user = action.payload; // FIXED
         state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -115,7 +117,7 @@ const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload; // <--- FIXED
+        state.user = action.payload; // FIXED
         state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
