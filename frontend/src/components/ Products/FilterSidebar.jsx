@@ -20,7 +20,7 @@ const FilterSidebar = () => {
 
     const [pricerange , setPriceRange] = useState([0,100])
 
-    const categories = ['Top wear' , 'Bottom Wear']
+    const categories = ['Top Wear' , 'Bottom Wear']
 
     const colors = [
         'Red' ,

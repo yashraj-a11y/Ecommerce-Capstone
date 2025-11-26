@@ -55,8 +55,10 @@ export const updateUser = createAsyncThunk(
           },
         }
       );
-      return response.data; // FIXED
+      return response.data; 
     } catch (err) {
+      console.log(err);
+      
       return rejectWithValue(err.response?.data || "Something went wrong");
     }
   }

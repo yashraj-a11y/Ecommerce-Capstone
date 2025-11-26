@@ -15,12 +15,12 @@ const ProductsGrid = ({ products, loading, error }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {products?.map((product, index) => {
-        // ⬇️ FIX 1 — Safe image fallback
-        const safeImage = product?.image?.[0]?.url || "/placeholder.png";
+        // ⬇️ FIX 1 — Safe images fallback
+        const safeImage = product?.images?.[0]?.url || "/placeholder.png";
 
         // ⬇️ FIX 2 — Safe alt text fallback
         const altText =
-          product?.image?.[0]?.altText || product?.name || "product";
+          product?.images?.[0]?.altText || product?.name || "product";
 
         return (
           <Link key={index} to={`/product/${product._id}`} className="block">

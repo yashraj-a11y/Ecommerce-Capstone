@@ -21,10 +21,9 @@ const store = configureStore({
     checkoutc: checkoutReducer ,
     orders : orderReducer ,
     admin : adminReducer ,
-    adminReducer : adminProductReducer ,
-    adminReducer : adminOrderReducer 
+    adminProducts : adminProductReducer ,
+    adminOrders : adminOrderReducer 
    
-
   },
 })
 

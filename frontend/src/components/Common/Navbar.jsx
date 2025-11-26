@@ -12,7 +12,7 @@ const Navbar = () => {
     const [drawerOpen, setDrawerOpen] = useState(false)
     const [navDrawerOpen , setNavDrawerOpen] = useState(false)
     const {cart} = useSelector((state) => state.cart) ;
-    const {user} = useSelector((state) => state.auth)
+    const {user} = useSelector((state) => state.auth) ;
 
     const cartItemCount = cart?.products?.reduce((total,product) => total + product.quantity , 0) || 0 ;
 
@@ -52,7 +52,7 @@ const Navbar = () => {
             Women
           </Link>
           <Link
-            to="/collections/all?category=Top wear"
+            to="/collections/all?category=Top Wear"
             className="text-gray-700 hover:text-black text-sm font-medium uppercase"
           >
             TopWear

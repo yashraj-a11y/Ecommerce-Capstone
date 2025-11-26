@@ -19,7 +19,7 @@ const OrderConfirmationPage = () => {
       dispatch(clearCart())
       localStorage.removeItem('cart')
     } else {
-      navigate('/my-order')
+      navigate('/my-orders')
     }
   }, [checkout, dispatch, navigate])
 

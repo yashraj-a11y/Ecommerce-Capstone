@@ -17,6 +17,7 @@ export const fetchAdminProducts = createAsyncThunk("admin/fetchAdminProducts", a
       },
     }
   );
+  // console.log(response)
   return response.data;
 });
 
@@ -65,7 +66,7 @@ export const updateProduct = createAsyncThunk(
 export const deleteProduct = createAsyncThunk('adminProducts/deleteProduct' , async(id) => {
     
         await axios.delete(
-            `${import.meta.env.VITE_BACKEND_URL}/api/admin/products/${id}`,
+            `${import.meta.env.VITE_BACKEND_URL}/api/products/${id}`,
 
             {
                 headers : {
@@ -80,7 +81,7 @@ export const deleteProduct = createAsyncThunk('adminProducts/deleteProduct' , as
 const adminProductSlice = createSlice({
     name : 'adminProducts' ,
     initialState : {
-        users : [] ,
+        products : [] ,
         loading : false ,
         error : null
     } ,
@@ -120,7 +121,7 @@ const adminProductSlice = createSlice({
                 ) ;
                
                 if (index !== -1) {
-                    state.users[index] = action.payload ;
+                    state.products[index] = action.payload ;
                 }
             })
 
