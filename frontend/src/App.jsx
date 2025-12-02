@@ -9,7 +9,7 @@ import Profile from "./pages/Profile";
 import CollectionPage from "./pages/CollectionPage";
 import ProductDetails from "./components/ Products/ProductDetails";
 import Checkout from "./components/Cart/Checkout";
-import OrderConfirmatonPage from "./pages/OrderConfirmatonPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import OrderDetailsPage from "./pages/OrderDetailsPage";
 import MyOrdersPage from "./pages/MyOrdersPage";
 import AdminLayout from "./components/Admin/AdminLayout";
@@ -46,7 +46,7 @@ function App() {
             <Route path="checkout" element={<Checkout />} />
             <Route
               path="order-confirmation"
-              element={<OrderConfirmatonPage />}
+              element={<OrderConfirmationPage />}
             />
             <Route path="order/:id" element={<OrderDetailsPage />} />
             <Route path="/my-orders" element={<MyOrdersPage />} />
@@ -55,9 +55,9 @@ function App() {
 
           <Route path="/admin" element={
             <ProtectedRoute>
-              <AdminLayout role='admin'/>
+              <AdminLayout role='admin' />
             </ProtectedRoute>
-            }>
+          }>
             <Route index element={<AdminHomePAge />}></Route>
             <Route path="users" element={<UserManagement />}></Route>
             <Route path="products" element={<ProductManagement />}></Route>

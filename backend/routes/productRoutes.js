@@ -2,7 +2,7 @@
 
 const express = require('express')
 const Product = require('../models/Product')
-const {protect , admin} = require('../middleware/authMiddleware');
+const { protect, admin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -11,65 +11,65 @@ const router = express.Router();
 // @desc create a new product
 // access Private/Admin
 
-router.post('/' , protect, admin ,async(req, res) => {
+router.post('/', protect, admin, async (req, res) => {
     try {
         const {
-            name ,
-            description ,
-            price ,
-            discountPrice ,
-            countInStock ,
-            category ,
-            brand ,
-            sizes ,
-            colors ,
-            collections ,
-            material ,
-            gender ,
-            images ,
+            name,
+            description,
+            price,
+            discountPrice,
+            countInStock,
+            category,
+            brand,
+            sizes,
+            colors,
+            collections,
+            material,
+            gender,
+            images,
             isFeatured,
-            isPublished ,
-            tags ,
-            dimensions ,
-            weight ,
-            sku ,
-            
+            isPublished,
+            tags,
+            dimensions,
+            weight,
+            sku,
+
         } = req.body
 
         const product = new Product({
-            name ,
-            description ,
-            price ,
-            discountPrice ,
-            countInStock ,
-            category ,
-            brand ,
-            sizes ,
-            colors ,
-            collections ,
-            material ,
-            gender ,
-            images ,
+            name,
+            description,
+            price,
+            discountPrice,
+            countInStock,
+            category,
+            brand,
+            sizes,
+            colors,
+            collections,
+            material,
+            gender,
+            images,
             isFeatured,
-            isPublished ,
-            tags ,
-            dimensions ,
-            weight ,
-            sku ,
-            user : req.user._id , // Reffernce to the admin user who created it
-            
-        }) ;
+            isPublished,
+            tags,
+            dimensions,
+            weight,
+            sku,
+            user: req.user._id, // Reffernce to the admin user who created it
+
+        });
 
         const createdProduct = await product.save()
-        res.status(201).json(createdProduct) ;
+        res.status(201).json(createdProduct);
 
-    } catch(err) {
+    } catch (err) {
         console.error(err);
         return res.status(500).send('Server Error')
-        
+
 
     }
-}); 
+});
 
 
 
@@ -77,31 +77,31 @@ router.post('/' , protect, admin ,async(req, res) => {
 // @desc Update an existing product ID
 // @access Private/Admin
 
-router.put('/:id' , protect , admin , async(req,res) => {
+router.put('/:id', protect, admin, async (req, res) => {
     try {
 
         const {
-            name ,
-            description ,
-            price ,
-            discountPrice ,
-            countInStock ,
-            category ,
-            brand ,
-            sizes ,
-            colors ,
-            collections ,
-            material ,
-            gender ,
-            images ,
+            name,
+            description,
+            price,
+            discountPrice,
+            countInStock,
+            category,
+            brand,
+            sizes,
+            colors,
+            collections,
+            material,
+            gender,
+            images,
             isFeatured,
-            isPublished ,
-            tags ,
-            dimensions ,
-            weight ,
-            sku ,
-            
-        }  = req.body
+            isPublished,
+            tags,
+            dimensions,
+            weight,
+            sku,
+
+        } = req.body
 
         // Find product by id
 
@@ -123,29 +123,29 @@ router.put('/:id' , protect , admin , async(req,res) => {
             product.material = material || product.material
             product.gender = gender || product.gender
             product.images = images || product.images
-            product.isFeatured = 
-            isFeatured !== undefined ? isFeatured : product.isFeatured
-            product.isPublished = 
-            isPublished !== undefined ? isPublished : product.isPublished
+            product.isFeatured =
+                isFeatured !== undefined ? isFeatured : product.isFeatured
+            product.isPublished =
+                isPublished !== undefined ? isPublished : product.isPublished
             product.tags = tags || product.tags
             product.dimensions = dimensions || product.dimensions
             product.weight = weight || product.weight
             product.sku = sku || product.sku
-            
+
             // save the updated product
 
-            const updatedProduct = await product.save() ;
-            res.json(updatedProduct) ;
-        } else  {
-            res.status(404).json({message : 'Product not Found'})
+            const updatedProduct = await product.save();
+            res.json(updatedProduct);
+        } else {
+            res.status(404).json({ message: 'Product not Found' })
         }
 
 
 
-    } catch (err){
+    } catch (err) {
         console.error(err);
         res.status(500).send('Server error')
-        
+
 
 
     }
@@ -156,7 +156,7 @@ router.put('/:id' , protect , admin , async(req,res) => {
 // @desc delete a product by ID
 // @access Private/Admin
 
-router.delete('/:id' , protect, admin , async(req,res) => {
+router.delete('/:id', protect, admin, async (req, res) => {
     try {
         // Find the product by ID
         const product = await Product.findById(req.params.id)
@@ -164,32 +164,32 @@ router.delete('/:id' , protect, admin , async(req,res) => {
         if (product) {
             // Remove the product from DB
             await product.deleteOne();
-            res.json({message : 'Product removed'})
+            res.json({ message: 'Product removed' })
 
         } else {
-            return res.status(404).json({message : 'Product not found'})
+            return res.status(404).json({ message: 'Product not found' })
         }
 
-    } catch(err) {
+    } catch (err) {
         console.error(err);
         return res.status(500).json('Server error')
-        
+
     }
-}) ;
+});
 
 // @route GET /api/products
 // @desc Get all products with optional query filters
 // @access Public
 
-router.get('/' , async(req,res) => {
+router.get('/', async (req, res) => {
     try {
 
-        const {collection , size , color , gender , minPrice , maxPrice , sortBy ,
-            search , category , material , brand , limit
+        const { collection, size, color, gender, minPrice, maxPrice, sortBy,
+            search, category, material, brand, limit, page
         } = req.query
 
-        let query = {} ;
-        let sort = {} ;
+        let query = {};
+        let sort = {};
 
         // Filter logic
 
@@ -200,28 +200,28 @@ router.get('/' , async(req,res) => {
         if (category && category.toLocaleLowerCase() !== 'all') {
             query.category = category
         }
-        
+
         if (material) {
-            query.material = {$in : material.split(',')}
+            query.material = { $in: material.split(',') }
         }
 
         if (brand) {
-            query.brand = {$in : brand.split(',')}
+            query.brand = { $in: brand.split(',') }
         }
 
         if (size) {
-            query.sizes = {$in : size.split(',')}
+            query.sizes = { $in: size.split(',') }
         }
 
         if (color) {
-            query.colors = {$in : [color]}
+            query.colors = { $in: [color] }
         }
 
         if (gender) {
             query.gender = gender
         }
 
-        
+
         if (minPrice || maxPrice) {
             query.price = {};
             if (minPrice) query.price.$gte = Number(minPrice);
@@ -230,46 +230,59 @@ router.get('/' , async(req,res) => {
 
         if (search) {
             query.$or = [
-                {name : {$regex : search , $options : "i"}} ,
-                {description : {$regex : search , $options : "i"}}
-            ] ;
+                { name: { $regex: search, $options: "i" } },
+                { description: { $regex: search, $options: "i" } }
+            ];
         }
 
         // Sort Logic
 
         if (sortBy) {
             switch (sortBy) {
-                case 'priceAsc' :
-                    sort = {price : 1};
-                    break ;
-                case 'priceDesc' :
-                    sort = {price : -1} ;
-                    break ;
-                case  'popularity'  :
-                    sort = {price : -1} ;
-                    break ;
-                
-                default :
-                break
+                case 'priceAsc':
+                    sort = { price: 1 };
+                    break;
+                case 'priceDesc':
+                    sort = { price: -1 };
+                    break;
+                case 'popularity':
+                    sort = { price: -1 };
+                    break;
+
+                default:
+                    break
             }
         }
 
-        // Fetch products and apply sorting
+        // Pagination logic
+        const pageNumber = Number(page) || 1;
+        const pageSize = Number(limit) || 12;
+        const skip = (pageNumber - 1) * pageSize;
 
+        // Get total count for pagination metadata
+        const totalProducts = await Product.countDocuments(query);
+        const totalPages = Math.ceil(totalProducts / pageSize);
+
+        // Fetch products with pagination
         let products = await Product.find(query)
-        .sort(sort)
-        .limit(Number(limit) || 0);
-        res.json(products)
+            .sort(sort)
+            .skip(skip)
+            .limit(pageSize);
 
-
-
-
-
+        // Return paginated response
+        res.json({
+            products,
+            currentPage: pageNumber,
+            totalPages,
+            totalProducts,
+            hasNextPage: pageNumber < totalPages,
+            hasPrevPage: pageNumber > 1
+        });
 
     } catch (err) {
         console.error(err);
         res.status(500).json('server error')
-        
+
 
     }
 })
@@ -281,20 +294,20 @@ router.get('/' , async(req,res) => {
 // @access Public
 
 
-router.get('/similar/:id' , async(req,res) => {
-    const {id} = req.params
+router.get('/similar/:id', async (req, res) => {
+    const { id } = req.params
     try {
         const product = await Product.findById(id)
 
         if (!product) {
-            return res.status(404).json({message : 'Product Not Found'})
+            return res.status(404).json({ message: 'Product Not Found' })
         }
 
         const similarProducts = await Product.find({
-            _id : {$ne : id} , // Exclude the Current product ID
-            gender : product.gender ,
-            category : product.category,
-        }).limit(4) ;
+            _id: { $ne: id }, // Exclude the Current product ID
+            gender: product.gender,
+            category: product.category,
+        }).limit(4);
 
         res.json(similarProducts)
 
@@ -303,28 +316,28 @@ router.get('/similar/:id' , async(req,res) => {
     } catch (err) {
         console.error(err);
         res.json(500).send('server Error')
-        
+
     }
-}) ;
+});
 
 // @route GET /api/prodducts/best-seller
 // @desc Retrive the Product with highest rating
 // @access
 
-router.get('/best-seller' , async(req,res) => {
+router.get('/best-seller', async (req, res) => {
     try {
-        const bestSeller = await Product.findOne().sort({rating : -1})
+        const bestSeller = await Product.findOne().sort({ rating: -1 })
 
         if (bestSeller) {
             res.json(bestSeller)
         } else {
-            res.status(404).json({message : "No Best Seller Found"})
+            res.status(404).json({ message: "No Best Seller Found" })
         }
-    } catch(err) {
+    } catch (err) {
         console.error(err);
         res.status(500).json('server Error')
-        
-        
+
+
     }
 
 })
@@ -332,16 +345,16 @@ router.get('/best-seller' , async(req,res) => {
 // @route GET /api/products/new-arrivals
 // @desc Retrive latest 8 products - Creation date
 // @access Public
-router.get('/new-arrivals' , async(req,res) => {
+router.get('/new-arrivals', async (req, res) => {
     try {
         // Fetch latest 8 products
-        const newArrivals = await Product.find().sort({createdAt: -1}).limit(8) ;
+        const newArrivals = await Product.find().sort({ createdAt: -1 }).limit(8);
         res.json(newArrivals)
-        
-    } catch(err) {
+
+    } catch (err) {
         console.error(err);
         res.status(500).send('server error')
-        
+
 
     }
 })
@@ -353,19 +366,19 @@ router.get('/new-arrivals' , async(req,res) => {
 // @route GET /api/products/:id
 // @desc Get a single products by ID
 // @access Public 
-router.get('/:id' , async(req,res) => {
+router.get('/:id', async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
         if (product) {
             res.json(product)
         } else {
-           return  res.status(404).json({message : 'Product Not Found'})
+            return res.status(404).json({ message: 'Product Not Found' })
         }
 
-    } catch (err) { 
+    } catch (err) {
         console.error(err);
         return res.status(500).json('server error')
-        
+
 
     }
 })
@@ -379,4 +392,4 @@ router.get('/:id' , async(req,res) => {
 
 
 
-module.exports = router ;
+module.exports = router;

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Manual Testing Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .test-section {
+            margin-bottom: 40px;
+            border-left: 4px solid #667eea;
+            padding-left: 20px;
+        }
+
+        .test-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .test-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .test-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .test-item h3 {
+            color: #495057;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .test-item .number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .test-steps {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .test-steps li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #6c757d;
+        }
+
+        .test-steps li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .url-box {
+            background: #fff3cd;
+            border: 2px dashed #ffc107;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            color: #856404;
+            font-weight: bold;
+        }
+
+        .api-indicator {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .status-card {
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .status-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .status-card .count {
+            font-size: 3em;
+            font-weight: bold;
+            color: #764ba2;
+        }
+
+        .quick-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .quick-link {
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .quick-link:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .checklist-item {
+            padding: 12px;
+            background: white;
+            margin: 8px 0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .note {
+            background: #d1ecf1;
+            border-left: 4px solid #0c5460;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛍️ E-commerce Testing Guide</h1>
+            <p>Comprehensive Manual Testing Workflow</p>
+        </header>
+
+        <div class="content">
+            <div class="status-grid">
+                <div class="status-card">
+                    <h3>API Tests</h3>
+                    <div class="count">✓</div>
+                    <p>All endpoints verified</p>
+                </div>
+                <div class="status-card">
+                    <h3>Pages to Test</h3>
+                    <div class="count">8</div>
+                    <p>Frontend pages</p>
+                </div>
+                <div class="status-card">
+                    <h3>Features</h3>
+                    <div class="count">15+</div>
+                    <p>Core features</p>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>📝 Note:</strong> All API endpoints have been tested and verified. Now we'll test the frontend integration with these APIs through the browser.
+            </div>
+
+            <!-- Test 1: Home Page -->
+            <div class="test-section">
+                <h2>1️⃣ Home Page Testing</h2>
+                <div class="test-item">
+                    <h3><span class="number">1</span> Home Page <span class="api-indicator">GET /products/new-arrivals</span></h3>
+                    <div class="url-box">http://localhost:5173/</div>
+                    <ul class="test-steps">
+                        <li>Verify hero section displays correctly</li>
+                        <li>Check navigation menu is functional</li>
+                        <li>Confirm new arrivals section loads (8 products)</li>
+                        <li>Test "Shop Now" buttons</li>
+                        <li>Verify footer links</li>
+                    </ul>
+                    <div class="quick-links">
+                        <a href="http://localhost:5173/" target="_blank" class="quick-link">Open Home Page</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test 2: Product Listing -->
+            <div class="test-section">
+                <h2>2️⃣ Product Listing & Filtering</h2>
+                <div class="test-item">
+                    <h3><span class="number">2</span> Collection Page <span class="api-indicator">GET /products?filters</span></h3>
+                    <div class="url-box">http://localhost:5173/collection/men (or /women)</div>
+                    <ul class="test-steps">
+                        <li>Navigate to Men's or Women's collection</li>
+                        <li>Verify products display in grid</li>
+                        <li>Test size filter (S, M, L, XL)</li>
+                        <li>Test color filter</li>
+                        <li>Test price range filter</li>
+                        <li>Test search functionality</li>
+                        <li>Test sort options (price low-high, high-low)</li>
+                    </ul>
+                    <div class="quick-links">
+                        <a href="http://localhost:5173/collection/men" target="_blank" class="quick-link">Men's Collection</a>
+                        <a href="http://localhost:5173/collection/women" target="_blank" class="quick-link">Women's Collection</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test 3: Product Detail -->
+            <div class="test-section">
+                <h2>3️⃣ Product Detail Page</h2>
+                <div class="test-item">
+                    <h3><span class="number">3</span> Product Details <span class="api-indicator">GET /products/:id</span></h3>
+                    <div class="url-box">Click any product from collection page</div>
+                    <ul class="test-steps">
+                        <li>Click on any product from listing</li>
+                        <li>Verify product images display (gallery/carousel)</li>
+                        <li>Check product name, price, description</li>
+                        <li>Test size selection dropdown/buttons</li>
+                        <li>Test color selection</li>
+                        <li>Adjust quantity (+ / -)</li>
+                        <li>Click "Add to Cart"</li>
+                        <li>Verify success message/notification</li>
+                        <li>Check cart icon updates with count</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Test 4: Shopping Cart -->
+            <div class="test-section">
+                <h2>4️⃣ Shopping Cart</h2>
+                <div class="test-item">
+                    <h3><span class="number">4</span> Cart Operations <span class="api-indicator">GET/PUT/DELETE /cart</span></h3>
+                    <div class="url-box">http://localhost:5173/cart</div>
+                    <ul class="test-steps">
+                        <li>Navigate to cart (click cart icon)</li>
+                        <li>Verify all added items display</li>
+                        <li>Test quantity increase (+)</li>
+                        <li>Test quantity decrease (-)</li>
+                        <li>Verify price updates on quantity change</li>
+                        <li>Test remove item (trash icon)</li>
+                        <li>Verify total price calculation</li>
+                        <li>Test "Continue Shopping" button</li>
+                        <li>Test "Proceed to Checkout" button</li>
+                    </ul>
+                    <div class="quick-links">
+                        <a href="http://localhost:5173/cart" target="_blank" class="quick-link">Open Cart</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test 5: Authentication -->
+            <div class="test-section">
+                <h2>5️⃣ User Authentication</h2>
+                <div class="test-item">
+                    <h3><span class="number">5a</span> Registration <span class="api-indicator">POST /users/register</span></h3>
+                    <div class="url-box">http://localhost:5173/register</div>
+                    <ul class="test-steps">
+                        <li>Navigate to Register page</li>
+                        <li>Fill in Name field</li>
+                        <li>Fill in Email field (use new email)</li>
+                        <li>Fill in Password field</li>
+                        <li>Click "Sign Up" button</li>
+                        <li>Verify redirect to home/profile after success</li>
+                        <li>Check if user is logged in (header shows user name)</li>
+                    </ul>
+                    <div class="quick-links">
+                        <a href="http://localhost:5173/register" target="_blank" class="quick-link">Register Page</a>
+                    </div>
+                </div>
+
+                <div class="test-item">
+                    <h3><span class="number">5b</span> Login <span class="api-indicator">POST /users/login</span></h3>
+                    <div class="url-box">http://localhost:5173/login</div>
+                    <ul class="test-steps">
+                        <li>Navigate to Login page</li>
+                        <li>Enter registered email</li>
+                        <li>Enter password</li>
+                        <li>Click "Sign In" button</li>
+                        <li>Verify successful login</li>
+                        <li>Check redirect to home page</li>
+                        <li>Verify user name appears in header/nav</li>
+                    </ul>
+                    <div class="quick-links">
+                        <a href="http://localhost:5173/login" target="_blank" class="quick-link">Login Page</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test 6: Checkout -->
+            <div class="test-section">
+                <h2>6️⃣ Checkout Flow</h2>
+                <div class="test-item">
+                    <h3><span class="number">6</span> Complete Purchase <span class="api-indicator">POST /checkout</span></h3>
+                    <div class="url-box">From cart, click "Proceed to Checkout"</div>
+                    <ul class="test-steps">
+                        <li>Ensure you're logged in and have items in cart</li>
+                        <li>Click "Proceed to Checkout" from cart</li>
+                        <li>Fill in shipping address (street, city, state, postal code, country)</li>
+                        <li>Select payment method</li>
+                        <li>Review order summary (items, total)</li>
+                        <li>Click "Place Order"</li>
+                        <li>Verify redirect to order confirmation page</li>
+                        <li>Check order ID is displayed</li>
+                        <li>Verify order details are correct</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Test 7: Profile -->
+            <div class="test-section">
+                <h2>7️⃣ Profile Page</h2>
+                <div class="test-item">
+                    <h3><span class="number">7</span> User Profile <span class="api-indicator">GET /users/profile</span></h3>
+                    <div class="url-box">http://localhost:5173/profile</div>
+                    <ul class="test-steps">
+                        <li>Navigate to Profile page (must be logged in)</li>
+                        <li>Verify user name displays</li>
+                        <li>Verify email displays</li>
+                        <li>Check for any profile edit options</li>
+                        <li>Test logout button (if present)</li>
+                    </ul>
+                    <div class="quick-links">
+                        <a href="http://localhost:5173/profile" target="_blank" class="quick-link">Profile Page</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test 8: Orders -->
+            <div class="test-section">
+                <h2>8️⃣ Orders History</h2>
+                <div class="test-item">
+                    <h3><span class="number">8</span> My Orders <span class="api-indicator">GET /orders</span></h3>
+                    <div class="url-box">http://localhost:5173/orders (or My Orders link)</div>
+                    <ul class="test-steps">
+                        <li>Navigate to Orders/My Orders page</li>
+                        <li>Verify list of past orders displays</li>
+                        <li>Check each order shows: Order ID, Date, Total, Status</li>
+                        <li>Click on an order to view details</li>
+                        <li>Verify order items display correctly</li>
+                        <li>Check shipping address is shown</li>
+                        <li>Verify payment status</li>
+                    </ul>
+                    <div class="quick-links">
+                        <a href="http://localhost:5173/orders" target="_blank" class="quick-link">My Orders</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="note">
+                <strong>✅ Testing Checklist:</strong><br><br>
+                As you complete each test, take screenshots of:<br>
+                • Successful operations (add to cart, checkout, etc.)<br>
+                • Any errors or issues encountered<br>
+                • Final results (order confirmation, profile page, etc.)
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -20,6 +20,7 @@ export const fetchProductsByFilters = createAsyncThunk(
     material,
     brand,
     limit,
+    page,
   }) => {
     const query = new URLSearchParams();
 
@@ -35,6 +36,7 @@ export const fetchProductsByFilters = createAsyncThunk(
     if (material) query.append("material", material);
     if (brand) query.append("brand", brand);
     if (limit) query.append("limit", limit);
+    if (page) query.append("page", page);
 
     const response = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}/api/products?${query.toString()}`
@@ -104,6 +106,13 @@ const productsSlice = createSlice({
     similarProducts: [],
     loading: false,
     error: null,
+    pagination: {
+      currentPage: 1,
+      totalPages: 1,
+      totalProducts: 0,
+      hasNextPage: false,
+      hasPrevPage: false,
+    },
     filters: {
       category: "",
       size: "",
@@ -152,9 +161,22 @@ const productsSlice = createSlice({
 
       .addCase(fetchProductsByFilters.fulfilled, (state, action) => {
         state.loading = false;
-        state.products = Array.isArray(action.payload)
-          ? action.payload
-          : [];
+        // Handle paginated response
+        if (action.payload.products) {
+          state.products = action.payload.products;
+          state.pagination = {
+            currentPage: action.payload.currentPage,
+            totalPages: action.payload.totalPages,
+            totalProducts: action.payload.totalProducts,
+            hasNextPage: action.payload.hasNextPage,
+            hasPrevPage: action.payload.hasPrevPage,
+          };
+        } else {
+          // Fallback for non-paginated response
+          state.products = Array.isArray(action.payload)
+            ? action.payload
+            : [];
+        }
       })
 
       .addCase(fetchProductsByFilters.rejected, (state, action) => {

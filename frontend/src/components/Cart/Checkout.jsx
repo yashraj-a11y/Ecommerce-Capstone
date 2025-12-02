@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import PayPalButton from "./PayPalButton";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,9 +10,9 @@ const Checkout = () => {
 
 
   const navigate = useNavigate();
-  const dispatch = useDispatch() ;
-  const {cart , loading , error} = useSelector((state) => state.cart)
-  const {user} = useSelector((state) => state.auth)
+  const dispatch = useDispatch();
+  const { cart, loading, error } = useSelector((state) => state.cart)
+  const { user } = useSelector((state) => state.auth)
 
 
 
@@ -30,84 +30,84 @@ const Checkout = () => {
   });
 
   // Ensure that cart is loaded before proceeding
-  useEffect(()=>{ 
+  useEffect(() => {
     if (!cart || !cart.products || cart.products.length === 0) {
-      navigate('/') ;
+      navigate('/');
     }
-  } , [cart,navigate])
+  }, [cart, navigate])
 
   const handleCreateCheckout = async (e) => {
     e.preventDefault();
-    
+
     if (cart && cart.products.length > 0) {
       const res = await dispatch(
         createCheckout({
-        checkoutItems : cart.products ,
-        shippingAddress ,
-        paymentMethod : 'Paypal' ,
-        totalPrice : cart.totalPrice ,
+          checkoutItems: cart.products,
+          shippingAddress,
+          paymentMethod: 'Paypal',
+          totalPrice: cart.totalPrice,
 
         })
 
-      ) ;
+      );
 
       if (res.payload && res.payload._id) {
-        setCheckOutId(res.payload._id) ; //Set checkoutId if checkout wwas successful
+        setCheckOutId(res.payload._id); //Set checkoutId if checkout wwas successful
       }
     }
   };
 
-const handlePaymentSuccess = async (details) => {
-  try {
-    const response = await axios.put(
-      `${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/pay`,
-      {
-        paymentStatus: "paid",
-        paymentDetails: details,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+  const handlePaymentSuccess = async (details) => {
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/pay`,
+        {
+          paymentStatus: "paid",
+          paymentDetails: details,
         },
-      }
-    );
-
-    
-    await handleFinalizecheckout(checkoutId); // Finalize checkout
-    
-  } catch (err) {
-    console.error("Payment error:", err);
-  }
-};
-
-const handleFinalizecheckout = async(checkoutId) => {
-  try {
-
-    const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/finalize`,
-      {} ,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-        },
-      }
-    );
-
-    navigate('/order-confirmation'); // Finalize checkout
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        }
+      );
 
 
-  } catch(error) {
+      await handleFinalizecheckout(checkoutId); // Finalize checkout
+
+    } catch (err) {
+      console.error("Payment error:", err);
+    }
+  };
+
+  const handleFinalizecheckout = async (checkoutId) => {
+    try {
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/api/checkout/${checkoutId}/finalize`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        }
+      );
+
+      navigate('/order-confirmation'); // Finalize checkout
+
+
+    } catch (error) {
       console.error(error);
 
+    }
+  };
+
+  if (loading) return <p>Loading Cart ...</p>;
+  if (error) return <p>Error : {error}</p>
+
+  if (!cart || !cart.products || cart.products.length === 0) {
+    return <p>Your Cart is empty</p>
   }
-} ;
-
-if (loading) return <p>Loading Cart ...</p> ;
-if (error) return <p>Error : {error}</p>
-
-if (!cart || !cart.products || cart.products.length === 0) {
-  return <p>Your Cart is empty</p>
-}
 
 
 
@@ -123,7 +123,7 @@ if (!cart || !cart.products || cart.products.length === 0) {
             <label className="block text-gray-700">Email</label>
             <input
               type="email"
-              value={user? user.email : ''}
+              value={user ? user.email : ''}
               className="w-full p-2 border rounded"
               disabled
             />
@@ -297,19 +297,19 @@ if (!cart || !cart.products || cart.products.length === 0) {
           ))}
         </div>
         <div className="flex justify-between items-center text-lg mb-4">
-            <p>Subtotal</p>
-            <p>${cart.totalPrice?.toLocaleString()}</p>
-            
+          <p>Subtotal</p>
+          <p>${cart.totalPrice?.toLocaleString()}</p>
+
         </div>
 
         <div className="flex justify-between items-center text-lg">
-            <p>Shipping</p>
-            <p>Free</p>
+          <p>Shipping</p>
+          <p>Free</p>
         </div>
 
         <div className="flex justify-between items-center text-lg mt-4 border-t pt-4">
-            <p>Total</p>
-            <p>${cart.totalPrice?.toLocaleString()}</p>
+          <p>Total</p>
+          <p>${cart.totalPrice?.toLocaleString()}</p>
 
         </div>
 

@@ -10,12 +10,12 @@ const router = express.Router();
 // @desc    Register a new user
 // @access  Public
 router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   if (!name && !email && !password) {
     console.log('credentials not being provided');
-    return res.status(404).json({message : "invalid credentials"})
-    
+    return res.status(404).json({ message: "invalid credentials" })
+
   }
 
   try {
@@ -27,10 +27,11 @@ router.post("/register", async (req, res) => {
     }
 
     // Create new user instance
-    user = new User({ name, email, password });
+    user = new User({ name, email, password, role });
     await user.save();
+
     console.log('user data saved succesfully');
-    
+
 
     // Create JWT payload
     const payload = { user: { id: user._id, role: user.role } };
@@ -39,7 +40,7 @@ router.post("/register", async (req, res) => {
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
-      { expiresIn: "40h" },
+
       (err, token) => {
         if (err) throw err;
         res.status(201).json({
@@ -71,15 +72,17 @@ router.post("/login", async (req, res) => {
     if (!user) {
       console.log('invalid credentials')
       return res.status(400).json({ message: "Invalid credentials" });
-}
+    }
     // Match password
     const isMatch = await user.matchPassword(password);
     if (!isMatch) {
       console.log('invalid password')
+      console.log('Input password:', password);
+      console.log('Stored hash:', user.password);
       return res.status(400).json({ message: "Invalid credentials" });
 
     }
-      
+
 
     // Create JWT payload
     const payload = { user: { id: user._id, role: user.role } };
@@ -88,7 +91,7 @@ router.post("/login", async (req, res) => {
     jwt.sign(
       payload,
       process.env.JWT_SECRET,
-      { expiresIn: "40h" },
+
       (err, token) => {
         if (err) throw err;
         res.json({
@@ -113,8 +116,8 @@ router.post("/login", async (req, res) => {
 // @desc Get loggged in user`s profile(Protected Route)
 // @access Private 
 
-router.get('/profile' , protect , async(req,res) => {
-    res.json(req.user)
+router.get('/profile', protect, async (req, res) => {
+  res.json(req.user)
 })
 
 module.exports = router;
