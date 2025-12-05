@@ -1,6 +1,6 @@
 # 🐰 Rabbit - E-Commerce Platform
 
-🚀 **[Live Demo](https://ecommerce-capstone-kz4v.vercel.app/)** 
+🚀 **[Frontend Deploayment](https://ecommerce-capstone-kz4v.vercel.app/)** 
 
 A modern, full-stack e-commerce website built with Next.js, Node.js, and MySQL, designed to provide a seamless shopping experience for customers and efficient management tools for administrators.
 
