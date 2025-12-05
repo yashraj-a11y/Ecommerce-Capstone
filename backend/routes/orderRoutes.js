@@ -29,7 +29,7 @@ router.get('/my-orders' , protect , async(req , res) => {
 }) ;
 
 // @route GET /api/orders/:id
-// @desc Get aorder detils by id
+// @desc Get a order detils by id
 // access Private
 
 router.get('/:id' , protect , async(req,res) => {
